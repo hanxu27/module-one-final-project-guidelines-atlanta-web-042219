@@ -3,7 +3,7 @@ class CreateTryouts < ActiveRecord::Migration[5.0]
     create_table :tryouts do |t|
       t.integer :player_id
       t.integer :coach_id
-      t.string :string
+      t.string :season
       t.integer :age_level
       t.integer :tryout_number
       t.integer :player_height
