@@ -1,5 +1,4 @@
 require_relative '../config/environment'
-
-
-
-puts "HELLO WORLD"
+require_relative '../bin/run.rb'
+cli = Interface.new
+cli.run
