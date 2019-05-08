@@ -55,6 +55,7 @@ class Player < ActiveRecord::Base
         puts "Invalid input."
       end
       self.save
+    end
 
     def view_eval
     # view the average score of eval, out of 60
@@ -69,6 +70,5 @@ class Player < ActiveRecord::Base
     def view_coaches
     # view unique coaches that have evaluated this player
         self.coaches.uniq.map { |c| c.name }
-
     end
 end
