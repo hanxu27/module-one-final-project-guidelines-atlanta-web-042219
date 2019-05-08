@@ -62,7 +62,7 @@ class Coach < ActiveRecord::Base
 
     def delete_last_eval
         # delete the last eval this coah has made
-        Tryout.where(coach_id: c2.id).last.destroy
+        Tryout.where(coach_id: self.id).last.destroy
     end
 
     def compare_players(first_player:, second_player:)
@@ -70,8 +70,14 @@ class Coach < ActiveRecord::Base
         p1 = Player.find_by(name: first_player)
         p2 = Player.find_by(name: second_player)
         
-        puts "#{first_player} scored: #{p1.view_eval}"
-        puts "#{second_player} scored: #{p2.view_eval}"
-        p1.view_eval - p2.view_eval
+        begin
+            p1.view_eval
+        rescue => exception
+            return nil
+        else
+            puts "#{first_player} scored: #{p1.view_eval}"
+            puts "#{second_player} scored: #{p2.view_eval}"
+            p1.view_eval - p2.view_eval
+        end
     end
 end
