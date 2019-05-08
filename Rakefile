@@ -6,6 +6,7 @@ task :console do
   # ActiveRecord::Base.logger.level = Logger.new(STDOUT)
   # ActiveRecord::Base.logger.level = nil
 
+
   p = Player.first
   p.sign_up(age_level: 14, position: "MB")
   c = Coach.first
@@ -19,4 +20,5 @@ task :console do
   c.make_eval(tryout_number: pl.tryout_number, setting: 6, passing: 3, hitting: 5, emotions: 7, talking: 6, learning: 9)
   c2.make_eval(tryout_number: pl.tryout_number, setting: 8, passing: 5, hitting: 6, emotions: 5, talking: 7, learning: 8)
   c2.make_eval(tryout_number: pl.tryout_number, setting: 8, passing: 5, hitting: 6, emotions: 5, talking: 7, learning: 100)
+
 end
