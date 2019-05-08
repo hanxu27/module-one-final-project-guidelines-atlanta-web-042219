@@ -99,8 +99,10 @@ class Interface
       3. Delete my last evaluation
       4. Review my evaluations
 
-      5. Compare player scores
-      6. Clear all players who have not signed up
+      5. View all players for tryout
+
+      6. Compare player scores
+      7. Clear all players who have not signed up
       
       9. Exit"
       puts "Please enter a command:"
@@ -109,12 +111,15 @@ class Interface
       when "9"
         puts "Signing off..."
         exit
+      when "7"
+        system "clear"
+        coach_menu_7(coach)
       when "6"
         system "clear"
         coach_menu_6(coach)
       when "5"
         system "clear"
-        coach_menu_5(coach)
+        coach_menu_5
       when "4"
         system "clear"
         coach_menu_4(coach)
@@ -131,7 +136,7 @@ class Interface
     end
   end
 
-  def coach_menu_6(coach)
+  def coach_menu_7(coach)
     puts "Are you sure? This cannot be undone... (Y/n)"
       i = gets.strip
       if i == "Y"
@@ -144,12 +149,18 @@ class Interface
       end
   end
   
-  def coach_menu_5(coach)
-    Puts "Enter 1st player name:"
+  def coach_menu_6(coach)
+    puts "Enter 1st player name:"
     p1name = gets.downcase.strip
-    Puts "Enter 2nd player name:"
+    puts "Enter 2nd player name:"
     p2name = gets.downcase.strip
     coach.compare_players ? (compare_players(first_player: p1name, second_player: p2name)) : (puts "Players not found...")
+  end
+
+  def coach_menu_5
+    Player.signed_players.each do |p|
+      puts "##{p.tryout_number} #{p.name} for Level: #{p.age_level} Position: #{p.position} School: #{p.school}"
+    end
   end
 
   def coach_menu_4(coach)

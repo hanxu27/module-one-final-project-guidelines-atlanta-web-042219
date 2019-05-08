@@ -70,6 +70,10 @@ class Player < ActiveRecord::Base
 
     def view_coaches
     # view unique coaches that have evaluated this player
-        self.coaches.uniq.map { |c| c.name }
+      self.coaches.uniq.map { |c| c.name }
+    end
+
+    def self.signed_players
+      Player.all.select { |p| p.tryout_number != nil }
     end
 end
