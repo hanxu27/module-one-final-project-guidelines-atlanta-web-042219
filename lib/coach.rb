@@ -33,18 +33,21 @@ class Coach < ActiveRecord::Base
     def make_eval(tryout_number:, setting:, passing:, hitting:, emotions:, talking:, learning:)
         # check if a tryout instance already exists between player and coach
         # if it does updated that one, if not make a new tryout via new_eval
-        eval = self.find_eval(tryout_number: tryout_number)
-
-        if eval
-            eval.setting = setting
-            eval.passing = passing
-            eval.hitting = hitting
-            eval.emotions = emotions
-            eval.talking = talking
-            eval.learning = learning
-            eval.save
+        if Player.signed?(tryout_number)
+            eval = self.find_eval(tryout_number: tryout_number)
+            if eval
+                eval.setting = setting
+                eval.passing = passing
+                eval.hitting = hitting
+                eval.emotions = emotions
+                eval.talking = talking
+                eval.learning = learning
+                eval.save
+            else
+                eval = new_eval(tryout_number: tryout_number, setting: setting, passing: passing, hitting: hitting, emotions: emotions, talking: talking, learning: learning)
+            end
         else
-            eval = new_eval(tryout_number: tryout_number, setting: setting, passing: passing, hitting: hitting, emotions: emotions, talking: talking, learning: learning)
+            eval = nil
         end
         eval
     end

@@ -76,4 +76,9 @@ class Player < ActiveRecord::Base
     def self.signed_players
       Player.all.select { |p| p.tryout_number != nil }
     end
+
+    def self.signed?(check_number)
+      arr = self.signed_players.map { |p| p.tryout_number }
+      arr.include?(check_number)
+    end
 end

@@ -164,6 +164,7 @@ class Interface
   end
 
   def coach_menu_4(coach)
+    coach.reload
     if coach.tryouts == []
       puts "You have not evaluated any players..." 
     else 
@@ -199,23 +200,27 @@ class Interface
   def coach_menu_1(coach)
     puts "Tryout number?:"
     tryout_number = gets.strip.to_i
-    puts "Setting skills? (1-10):"
-    setting = gets.strip.to_i
-    puts "Passing skills? (1-10):"
-    passing = gets.strip.to_i
-    puts "Hitting skills? (1-10):"
-    hitting = gets.strip.to_i
-    puts "Player emotions? (1-10):"
-    emotions = gets.strip.to_i
-    puts "Player talking? (1-10)"
-    talking = gets.strip.to_i
-    puts "Player learning? (1-10)"
-    learning = gets.strip.to_i
+    if Player.signed?(tryout_number)
+      puts "Setting skills? (1-10):"
+      setting = gets.strip.to_i
+      puts "Passing skills? (1-10):"
+      passing = gets.strip.to_i
+      puts "Hitting skills? (1-10):"
+      hitting = gets.strip.to_i
+      puts "Player emotions? (1-10):"
+      emotions = gets.strip.to_i
+      puts "Player talking? (1-10)"
+      talking = gets.strip.to_i
+      puts "Player learning? (1-10)"
+      learning = gets.strip.to_i
 
-    system "clear"
-    puts "Creating evaluation..."
-    coach.make_eval(tryout_number: tryout_number, setting: setting, passing: passing, hitting: hitting, emotions: emotions, talking: talking, learning: learning)
-    sleep 1
-    puts "Evaluation sucessful..."
+      system "clear"
+      puts "Creating evaluation..."
+      coach.make_eval(tryout_number: tryout_number, setting: setting, passing: passing, hitting: hitting, emotions: emotions, talking: talking, learning: learning)
+      sleep 1
+      puts "Evaluation sucessful..."
+    else
+      puts "That tryout number does not exist..."
+    end
   end
 end
