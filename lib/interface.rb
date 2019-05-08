@@ -14,6 +14,7 @@ class Interface
       name_c
     elsif input == "exit"
       puts "Good Bye"
+
     end
   end
 
@@ -28,7 +29,7 @@ class Interface
         #Display for current information
       return new_sign_up(player)
     else
-      new_player(input)
+      Player.new_player(input)
     end
   end
 
@@ -42,22 +43,9 @@ class Interface
     end
   end
 
-  def new_player(name)
-    puts "Welcome to Hello Volleyball, #{name}!"
-
-    puts "Please type your date of birth. ex)2006,02,01"
-    bday = gets.chomp.downcase
-
-    puts "Please type your phone number. ex)404-222-3333"
-    phone_num = gets.chomp.downcase
-
-    puts "Please type your school name. ex)Flatiron School"
-    school = gets.chomp.downcase
-
-    Player.create(name: name, birthday: bday, phone: phone_num, school: school)
-  end
-
   def new_sign_up(player)
+    #Show the player's info. not memory address.
+    puts Player.all.select {|x| x == player }
     puts "1.Sign Up"
     puts "2.Edit information"
     puts "3.Go Back"
@@ -67,7 +55,6 @@ class Interface
       age_level = gets.chomp
       puts "Type in positon:"
       position = gets.chomp
-      binding.pry
       player.sign_up(age_level: age_level, position: position)
 
     elsif input == "2"
@@ -79,8 +66,6 @@ class Interface
       puts "Invalid input."
     end
   end
-
-
 
   def run
     greet
