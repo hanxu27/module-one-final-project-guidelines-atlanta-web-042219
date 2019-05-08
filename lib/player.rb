@@ -10,7 +10,7 @@ class Player < ActiveRecord::Base
         self.tryout_number = self.id
         self.save
     end
-  
+
     def self.new_player(name)
       puts "Welcome to Hello Volleyball, #{name}!"
 
@@ -55,6 +55,7 @@ class Player < ActiveRecord::Base
         puts "Invalid input."
       end
       self.save
+    end
 
     def view_eval
     # view the average score of eval, out of 60
@@ -64,6 +65,7 @@ class Player < ActiveRecord::Base
             score = score + e.passing.to_i + e.setting.to_i + e.hitting.to_i + e.emotions.to_i + e.talking.to_i + e.learning.to_i
         end
         score / self.tryouts.count
+
     end
 
     def view_coaches

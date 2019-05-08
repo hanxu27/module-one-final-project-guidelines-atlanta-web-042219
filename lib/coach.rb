@@ -14,20 +14,20 @@ class Coach < ActiveRecord::Base
     def find_eval(tryout_number:)
         self.reload
         begin
-            self.tryouts.find do |t| 
-                t.coach_id == self.id && 
+            self.tryouts.find do |t|
+                t.coach_id == self.id &&
                 t.player_id == Player.find_by(tryout_number: tryout_number).id
             end
         rescue => exception
             return nil
         else
-            self.tryouts.find do |t| 
-                t.coach_id == self.id && 
+            self.tryouts.find do |t|
+                t.coach_id == self.id &&
                 t.player_id == Player.find_by(tryout_number: tryout_number).id
             end
         end
     end
-    
+
     def make_eval(tryout_number:, setting:, passing:, hitting:, emotions:, talking:, learning:)
         eval = self.find_eval(tryout_number: tryout_number)
 
