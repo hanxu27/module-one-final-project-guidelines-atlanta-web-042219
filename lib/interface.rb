@@ -48,7 +48,9 @@ class Interface
     puts Player.all.select {|x| x == player }
     puts "1.Sign Up"
     puts "2.Edit information"
-    puts "3.Go Back"
+    puts "3.View Evaluation"
+    puts "4.View Coaches"
+    puts "5.Go Back"
     input = gets.chomp.downcase
     if input == "1"
       puts "Type in age level:"
@@ -61,7 +63,14 @@ class Interface
       player.change_info
 
     elsif input == "3"
+      puts player.view_eval
+      # binding.pry
+    elsif input == "4"
+      player.view_coaches
+
+    elsif input == "5"
       firstQuestion
+
     else
       puts "Invalid input."
     end
