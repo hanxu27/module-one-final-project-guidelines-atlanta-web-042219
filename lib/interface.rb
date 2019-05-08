@@ -14,7 +14,6 @@ class Interface
       name_c
     elsif input == "exit"
       puts "Good Bye"
-
     end
   end
 
@@ -34,12 +33,20 @@ class Interface
   end
 
   def name_c
-    puts "What is your name?"
-    input = gets.chomp.downcase
-    if Coache.all.select {|coach| coach.name.downcase == input }.present?
-      arr = Coach.all.select {|coach| coach.name.downcase == input }
-      puts "Nice to meet you, #{input}."
-        #Display for current information, ask function..
+    input = ""
+    while input
+      puts "Hello coach, please enter your name:"
+      input = gets.chomp.downcase
+      if Coach.all.select {|coach| coach.name.downcase == input }.present?
+        coach = Coach.all.find {|coach| coach.name.downcase == input }
+        puts "Welcome, coach #{input}."
+        coach_menu(coach)
+      elsif input == "exit"
+        puts "Signing Off"
+        exit
+      else
+        puts "Sorry that's not a valid coach."
+      end
     end
   end
 
@@ -79,5 +86,28 @@ class Interface
   def run
     greet
     firstQuestion
+  end
+
+  def coach_menu(coach)
+    input = ""
+    while input
+      puts "Menu: 
+      1. Make Evaluation
+      2. Check who I have evaluated
+      3. Delete my last evaluation
+      4. Compare player scores
+      5. Clear all players who have not signed up
+      
+      9. Exit"
+      puts "Please enter a command:"
+      input = gets.downcase.strip
+      case input
+      when "9"
+        puts "Signing off..."
+        exit
+      # when "1"
+
+      end
+    end
   end
 end
