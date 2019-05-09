@@ -17,8 +17,7 @@ class Interface
   end
 
   def self.name_p
-    puts "What is your name?"
-    input = gets.chomp.downcase
+    input = $prompt.ask("What is your name? ")
     if Player.all.select {|player| player.name.downcase == input }.present?
       arr = Player.all.select {|player| player.name.downcase == input }
       player = arr[0]
@@ -110,48 +109,48 @@ class Interface
   end
 
   def self.coach_menu(coach)
-    system "clear"
     input = ""
     while input
-      puts "
-      Welcome coach #{coach.name}
-      Menu: 
-      1. Make an evaluation
-      2. Check who I have evaluated
-      3. Delete my last evaluation
-      4. Review my evaluations
+      system "clear"
+      message = "Welcome coach #{coach.name}\n Menu:\n" 
+      options = [
+        {value: 1, name: "Make an evaluation"},
+        {value: 2, name: "Check who I have evaluated"},
+        {value: 3, name: "Delete my last evaluation"},
+        {value: 4, name: "Review my evaluations"},
+        # \n here
+        {value: 5, name: "View all players for tryout"},
+        # \n here
+        {value: 6, name: "Compare player scores"},
+        {value: 7, name: "Clear all players who have not signed up"},
+        # \n here
+        {value: 9, name: "Exit"}]
+        
+       input = $prompt.select(message, options)
 
-      5. View all players for tryout
-
-      6. Compare player scores
-      7. Clear all players who have not signed up
-      
-      9. Exit"
-      puts "Please enter a command:"
-      input = gets.downcase.strip
       case input
-      when "9"
+      when 9
         puts "Signing off..."
         exit
-      when "7"
+      when 7
         system "clear"
         coach_menu_7(coach)
-      when "6"
+      when 6
         system "clear"
         coach_menu_6(coach)
-      when "5"
+      when 5
         system "clear"
         coach_menu_5
-      when "4"
+      when 4
         system "clear"
         coach_menu_4(coach)
-      when "3"
+      when 3
         system "clear"
         coach_menu_3(coach)
-      when "2"
+      when 2
         system "clear"
         coach_menu_2(coach)
-      when "1"
+      when 1
         system "clear"
         coach_menu_1(coach)
       end
@@ -211,12 +210,14 @@ class Interface
   end
 
   def self.coach_menu_2(coach)
+    system 'clear'
     name = coach.players
     if name == [] 
       puts "You have not evaluated any players..." 
     else 
       name.each { |p| puts "You have evaluated: #{p.name} with tryout number: ##{p.tryout_number}" }
     end
+    $prompt.ask("\nPress ENTER to continue...")
   end
 
   def self.coach_menu_1(coach)
