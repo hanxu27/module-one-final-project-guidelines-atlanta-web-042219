@@ -9,21 +9,25 @@ class Player < ActiveRecord::Base
         self.position = position
         self.tryout_number = self.id
         self.save
+        print "Thank you for Sign-Up.\n"
+         Interface.new_sign_up(player)
     end
 
     def self.new_player(name)
-      puts "Welcome to Hello Volleyball, #{name}!"
+      puts "Welcome to 'Hello Volleyball', #{name}!"
 
-      puts "Please type your date of birth. format) yyyy/mm/dd"
-      bday = DateTime.strptime(gets.chomp, '%Y/%m/%d')
+      puts "Please type your date of birth. format) yy/mm/dd"
+      bday = DateTime.strptime(gets.chomp, '%y/%m/%d')
 
-      puts "Please type your phone number. ex)404-222-3333"
+      puts "Please type your phone number. format)404-222-3333"
       phone_num = gets.chomp.downcase
 
-      puts "Please type your school name. ex)Flatiron School"
+      puts "Please type your school name. format)Flatiron School"
       school = gets.chomp.downcase
 
-      Player.create(name: name, birthday: bday, phone: phone_num, school: school)
+      player = Player.create(name: name, birthday: bday, phone: phone_num, school: school)
+      Interface.new_sign_up(player)
+
     end
 
     def change_info
@@ -38,19 +42,22 @@ class Player < ActiveRecord::Base
       when "1"
         print "Enter new name: "
         self.name = gets.chomp
+        changing
       when "2"
-        print "Enter new birthday (format: yyyy/mm/dd)\n"
+        print "Enter new birthday(format: yyyy/mm/dd): "
         self.birthday = DateTime.strptime(gets.chomp, '%Y/%m/%d')
+        changing
       when "3"
         print "Enter new school's name: "
         self.school = gets.chomp
+        changing
       when "4"
-        print "Enter new phone number: "
+        print "Enter new phone number(format)404-222-3333): "
         self.phone = gets.chomp
+        changing
       when "5"
         print "Go Back\n"
-        a = Interface.new
-         a.name_p
+         Interface.new_sign_up(player)
       else
         puts "Invalid input."
       end
@@ -65,7 +72,6 @@ class Player < ActiveRecord::Base
             score = score + e.passing.to_i + e.setting.to_i + e.hitting.to_i + e.emotions.to_i + e.talking.to_i + e.learning.to_i
         end
         score / self.tryouts.count
-
     end
 
     def view_coaches
@@ -80,5 +86,10 @@ class Player < ActiveRecord::Base
     def self.signed?(check_number)
       arr = self.signed_players.map { |p| p.tryout_number }
       arr.include?(check_number)
+    end
+
+    def changing
+      puts "Success for Updating."
+      change_info
     end
 end

@@ -1,11 +1,10 @@
 class Interface
 
-  def greet
+  def self.greet
     puts "Hello Volleyball"
   end
 
-
-  def firstQuestion
+  def self.firstQuestion
     puts "Are you 'Player' or 'Coach'?"
     input = gets.chomp.downcase
     if input == "player"
@@ -17,8 +16,7 @@ class Interface
     end
   end
 
-
-  def name_p
+  def self.name_p
     puts "What is your name?"
     input = gets.chomp.downcase
     if Player.all.select {|player| player.name.downcase == input }.present?
@@ -26,7 +24,7 @@ class Interface
       player = arr[0]
       puts "Welcome Back, #{input}!"
         #Display for current information
-      return new_sign_up(player)
+      return self.new_sign_up(player)
     else
       Player.new_player(input)
     end
@@ -49,9 +47,12 @@ class Interface
     end
   end
 
-  def new_sign_up(player)
-    #Show the player's info. not memory address.
-    puts Player.all.select {|x| x == player }
+  def self.new_sign_up(player)
+    # player = Player.all.find {|x| x == player }
+    puts "Your Name is #{player.name}."
+    puts "Your Birthday is #{player.birthday}."
+    puts "Your School's name is #{player.school}."
+    puts "Your Phone Number is #{player.phone}."
     puts "1.Sign Up"
     puts "2.Edit information"
     puts "3.View Evaluation"
@@ -63,17 +64,24 @@ class Interface
       age_level = gets.chomp
       puts "Type in positon:"
       position = gets.chomp
-      player.sign_up(age_level: age_level, position: position)
+      # player.sign_up(age_level: age_level, position: position)
+
+      self.new_sign_up(player)
 
     elsif input == "2"
       player.change_info
 
     elsif input == "3"
-      puts player.view_eval
+      eval = player.view_eval
+      puts "Your average score is #{eval}."
+      go_back(player)
 
     elsif input == "4"
-      player.view_coaches
-
+      coach = player.view_coaches
+      coach.each do |c|
+        puts "You were evaluated by #{c}"
+      end
+      go_back(player)
     elsif input == "5"
       firstQuestion
 
@@ -82,7 +90,21 @@ class Interface
     end
   end
 
-  def run
+  def self.go_back(player)
+    puts "Do you want to go back to previous options?(Y/N)"
+    input = gets.chomp.downcase
+    if input == 'y'
+      new_sign_up(player)
+    else
+      goodbye
+    end
+  end
+
+  def self.goodbye
+    puts "Good Bye"
+  end
+
+  def self.run
     greet
     firstQuestion
   end

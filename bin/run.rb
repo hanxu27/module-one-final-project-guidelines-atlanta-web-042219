@@ -1,5 +1,7 @@
 require_relative '../config/environment'
 # require_relative '../bin/run.rb'
 
-cli = Interface.new
-cli.run
+# cli = Interface.new
+# cli.run
+
+Interface.run
