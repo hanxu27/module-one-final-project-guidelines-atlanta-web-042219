@@ -10,7 +10,7 @@ end
     player = Player.create(name: "Certain Player #{i}", birthday: Date.new(2005,01,31), phone: "123-456-7890", school: "Certain High School")
     player.sign_up(age_level: 17, position: "OH")
     c_id = Coach.all.first.id
-    Tryout.create(player_id: player.id, coach_id: c_id, passing: 7, setting: 8, hitting: 7, emotions: 8, talking: 7, learning: 8)
+    Tryout.create(player_id: player.id, coach_id: c_id, passing: 7, setting: 8, hitting: 7, emotions: 8, talking: 7, learning: 8, age_level: 17, player_position: "OH", tryout_number: player.id)
 end
 
 9.times do |i|
@@ -21,5 +21,3 @@ end
     player1 = Player.create(name: "Best Player #{i}", birthday: Date.new(2007,10,1), phone: "456-123-7890", school: "Best School")
     player1.sign_up(age_level: 14, position: "DS")
 end
-
-
