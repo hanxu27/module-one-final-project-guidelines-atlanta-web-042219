@@ -205,14 +205,13 @@ class Interface
     coach.reload
     if coach.tryouts == []
       puts "You have not evaluated any players..." 
-      Interface.e_continue
     else 
         coach.tryouts.each do |t|
         score = t.passing + t.setting + t.hitting + t.emotions + t.talking + t.learning
-        puts "For playername: #{t.player.name}, tryout number: #{t.tryout_number}, age level: #{t.age_level}, you rated Passing: #{t.passing} Setting: #{t.setting} Hitting: #{t.hitting} Emotions: #{t.emotions} Talking: #{t.talking} Learning: #{t.learning} Total score of: #{score}"
-        Interface.e_continue
+        puts "Playername:#{t.player.name} Number:#{t.tryout_number} Agelevel:#{t.age_level} Score:#{score} Pass:#{t.passing} Set:#{t.setting} Hit:#{t.hitting} Emotions:#{t.emotions} Talking:#{t.talking} Learning:#{t.learning}"
       end
     end
+    Interface.e_continue
   end
 
   def self.coach_menu_3(coach)
