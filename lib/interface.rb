@@ -22,7 +22,6 @@ class Interface
     if Player.all.select {|player| player.name.downcase == input }.present?
       arr = Player.all.select {|player| player.name.downcase == input }
       player = arr[0]
-      puts "Welcome Back, #{input}!"
         #Display for current information
       return self.new_sign_up(player)
     else
@@ -49,7 +48,8 @@ class Interface
 
   def self.new_sign_up(player)
     # player = Player.all.find {|x| x == player }
-    puts "Your Name is #{player.name}."
+    system "clear"
+    puts "Welcome Back, #{player.name}!"
     puts "Your Birthday is #{player.birthday}."
     puts "Your School's name is #{player.school}."
     puts "Your Phone Number is #{player.phone}."
