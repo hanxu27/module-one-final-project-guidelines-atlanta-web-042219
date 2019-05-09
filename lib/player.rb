@@ -15,8 +15,8 @@ class Player < ActiveRecord::Base
       system "clear"
       puts "Welcome to Player Registration, #{name}!"
 
-      puts "Please type your date of birth (yy/mm/dd)"
-      bday = DateTime.strptime(gets.chomp, '%y/%m/%d')
+      puts "Please type your date of birth (yyyy-mm-dd)"
+      bday = DateTime.parse(gets)
 
       puts "Please type your phone number (404-222-3333)"
       phone_num = gets.chomp
@@ -30,37 +30,33 @@ class Player < ActiveRecord::Base
 
     def change_info
       system "clear"
-      puts "What do you want to change? (choose number)"
-      puts "1. Name"
-      puts "2. Birthday"
-      puts "3. School's name"
-      puts "4. Phone number"
-      puts "5. Go Back"
-      input = gets.chomp
+      input = $prompt.select("What do you want to change?") do |m|
+      m.choice "1. Name", 1
+      m.choice "2. Birthday", 2
+      m.choice "3. School's name", 3
+      m.choice "4. Phone number", 4
+      m.choice "5. Go Back", 5
+      end
       case input
-      when "1"
+      when 1
         print "Enter new name: "
         self.name = gets.chomp
         changing
-      when "2"
-        print "Enter new birthday(format: yyyy/mm/dd): "
-        self.birthday = DateTime.strptime(gets.chomp, '%Y/%m/%d')
+      when 2
+        print "Enter new birthday (format: yyyy-mm-dd): "
+        self.birthday = Date.parse(gets)
         changing
-      when "3"
+      when 3
         print "Enter new school's name: "
         self.school = gets.chomp
         changing
-      when "4"
-        print "Enter new phone number(format)404-222-3333): "
+      when 4
+        print "Enter new phone number (format: 404-222-3333): "
         self.phone = gets.chomp
         changing
-      when "5"
-        print "Go Back\n"
-         Interface.new_sign_up(player)
-      else
-        puts "Invalid input."
+      when 5
+        return
       end
-      self.save
     end
 
     def view_eval
@@ -88,7 +84,11 @@ class Player < ActiveRecord::Base
     end
 
     def changing
-      puts "Success for Updating."
+      self.save
+      puts "Updating..."
+      sleep 1
+      puts "Done."
+      Interface.e_continue
       change_info
     end
 
@@ -107,5 +107,5 @@ class Player < ActiveRecord::Base
           puts "#{second_player} scored: #{p2.view_eval}"
           p1.view_eval - p2.view_eval
       end
-  end
+    end
 end

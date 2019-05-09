@@ -83,12 +83,10 @@ class Interface
           end
         when 2
           player.change_info
-
         when 3
           eval = player.view_eval
           puts "Your average score is #{eval}."
           go_back(player)
-
         when 4
           coach = player.view_coaches
           coach.each do |c|
