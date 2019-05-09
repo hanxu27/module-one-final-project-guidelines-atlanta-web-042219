@@ -47,14 +47,14 @@ class Interface
   def self.player_menu(player)
     system "clear"
     puts "Welcome back, #{player.name}!"
-    puts "Your birthday is #{player.birthday}."
+    puts "Your birthday is #{player.birthday.strftime('%Y-%m-%d')}."
     puts "Your school's name is #{player.school}."
     puts "Your phone Number is #{player.phone}."
     Interface.e_continue
     input = ""
     while input
       system "clear"
-      input = $prompt.select("#{player.name}'s Menu:") do |menu|
+      input = $prompt.select("Hello #{player.name}, #{player.phone}\n#{player.birthday.strftime('%Y-%m-%d')}, #{player.school}\n\nPlayer Menu:") do |menu|
         menu.choice "1. Sign Up For Tryouts", 1
         menu.choice "2. Edit information", 2
         menu.choice "3. View Evaluation", 3
