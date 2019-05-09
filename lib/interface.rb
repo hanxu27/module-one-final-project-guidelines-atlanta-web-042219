@@ -92,10 +92,12 @@ class Interface
           end
           Interface.e_continue
         when 4
-          coach = player.view_coaches
-          coach.each do |c|
-            puts "You were evaluated by #{c}"
+          if player.coaches.present?
+            player.coaches.each { |c| puts "You were evaluated by #{c.name}" }
+          else
+            puts "You have no been evaluated yet..."
           end
+          Interface.e_continue
         when 5
           puts "Good Bye..."
           exit
