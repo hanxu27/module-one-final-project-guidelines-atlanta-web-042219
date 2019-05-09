@@ -3,6 +3,7 @@ class Coach < ActiveRecord::Base
     has_many :players, through: :tryouts
 
     def new_eval(tryout_number:, setting:, passing:, hitting:, emotions:, talking:, learning:)
+        # make a new tryout instance with the player with tryout_number with ratings within input
         player = Player.find(tryout_number)
         tryout = Tryout.create(player_id: player.id, coach_id: self.id, setting: setting, passing: passing, hitting: hitting, emotions: emotions, talking: talking, learning: learning)
         tryout.age_level = player.age_level
@@ -12,6 +13,7 @@ class Coach < ActiveRecord::Base
     end
 
     def find_eval(tryout_number:)
+        # find the tryout instance between this coach and player with tryout_number
         self.reload
         begin
             self.tryouts.find do |t|
@@ -29,18 +31,23 @@ class Coach < ActiveRecord::Base
     end
 
     def make_eval(tryout_number:, setting:, passing:, hitting:, emotions:, talking:, learning:)
-        eval = self.find_eval(tryout_number: tryout_number)
-
-        if eval
-            eval.setting = setting
-            eval.passing = passing
-            eval.hitting = hitting
-            eval.emotions = emotions
-            eval.talking = talking
-            eval.learning = learning
-            eval.save
+        # check if a tryout instance already exists between player and coach
+        # if it does updated that one, if not make a new tryout via new_eval
+        if Player.signed?(tryout_number)
+            eval = self.find_eval(tryout_number: tryout_number)
+            if eval
+                eval.setting = setting
+                eval.passing = passing
+                eval.hitting = hitting
+                eval.emotions = emotions
+                eval.talking = talking
+                eval.learning = learning
+                eval.save
+            else
+                eval = new_eval(tryout_number: tryout_number, setting: setting, passing: passing, hitting: hitting, emotions: emotions, talking: talking, learning: learning)
+            end
         else
-            eval = new_eval(tryout_number: tryout_number, setting: setting, passing: passing, hitting: hitting, emotions: emotions, talking: talking, learning: learning)
+            eval = nil
         end
         eval
     end
@@ -57,15 +64,23 @@ class Coach < ActiveRecord::Base
     end
 
     def delete_last_eval
-        Tryout.where(coach_id: c2.id).last.destroy
+        # delete the last eval this coah has made
+        Tryout.where(coach_id: self.id).last.destroy
     end
 
     def compare_players(first_player:, second_player:)
+        # compare the scores of first player against second player by name
         p1 = Player.find_by(name: first_player)
         p2 = Player.find_by(name: second_player)
         
-        puts "#{first_player} scored: #{p1.view_eval}"
-        puts "#{second_player} scored: #{p2.view_eval}"
-        p1.view_eval - p2.view_eval
+        begin
+            p1.view_eval
+        rescue => exception
+            return nil
+        else
+            puts "#{first_player} scored: #{p1.view_eval}"
+            puts "#{second_player} scored: #{p2.view_eval}"
+            p1.view_eval - p2.view_eval
+        end
     end
 end
