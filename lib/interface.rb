@@ -1,23 +1,23 @@
 class Interface
 
   def self.greet
-    puts "Hello Volleyball"
+    system "clear"
+    puts "Welcome to Very Badly Designed Volleyball Systems LLC..."
   end
 
   def self.firstQuestion
-    puts "Are you 'Player' or 'Coach'?"
-    input = gets.chomp.downcase
-    if input == "player"
+    input = $prompt.select("Are you 'Player' or 'Coach'?", %w(Player Coach Exit))
+    if input == "Player"
       name_p
-    elsif input.downcase == "coach"
+    elsif input == "Coach"
       name_c
-    elsif input == "exit"
+    elsif input == "Exit"
       puts "Good Bye"
     end
   end
 
   def self.name_p
-    input = $prompt.ask("What is your name? ")
+    input = $prompt.ask("Please enter your name: ")
     if Player.all.select {|player| player.name.downcase == input }.present?
       arr = Player.all.select {|player| player.name.downcase == input }
       player = arr[0]
@@ -31,8 +31,7 @@ class Interface
   def self.name_c
     input = ""
     while input
-      puts "Hello coach, please enter your name:"
-      input = gets.chomp.downcase
+      input = $prompt.ask("Hello coach, please enter your name: ").downcase
       if Coach.all.select {|coach| coach.name.downcase == input }.present?
         coach = Coach.all.find {|coach| coach.name.downcase == input }
         self.coach_menu(coach)
@@ -164,48 +163,68 @@ class Interface
         coach.clear_players
         puts "Deleting all players that have not signed up..."
         sleep 1
-        puts "And we are back"
+        Interface.e_continue
       else
         puts "Nothing done, back to the menu..."
+        Interface.e_continue
       end
   end
   
   def self.coach_menu_6(coach)
-    puts "Enter 1st player name:"
-    p1name = gets.downcase.strip
-    puts "Enter 2nd player name:"
-    p2name = gets.downcase.strip
-    coach.compare_players ? (compare_players(first_player: p1name, second_player: p2name)) : (puts "Players not found...")
+    p1name = $prompt.ask("Enter 1st player name: ")
+    if Player.find_by(name: p1name) == nil 
+      puts "Invalid Player Name" 
+      Interface.e_continue
+      return
+    end
+    p2name = $prompt.ask("Enter 2nd player name: ")
+    if Player.find_by(name: p2name) == nil 
+      puts "Invalid Player Name" 
+      Interface.e_continue
+      return
+    end
+    Player.compare_players(first_player: p1name, second_player: p2name)
+    Interface.e_continue
   end
 
   def self.coach_menu_5
     Player.signed_players.each do |p|
       puts "##{p.tryout_number} #{p.name} for Level: #{p.age_level} Position: #{p.position} School: #{p.school}"
     end
+    Interface.e_continue
   end
 
   def self.coach_menu_4(coach)
     coach.reload
     if coach.tryouts == []
       puts "You have not evaluated any players..." 
+      Interface.e_continue
     else 
         coach.tryouts.each do |t|
         score = t.passing + t.setting + t.hitting + t.emotions + t.talking + t.learning
         puts "For playername: #{t.player.name}, tryout number: #{t.tryout_number}, age level: #{t.age_level}, you rated Passing: #{t.passing} Setting: #{t.setting} Hitting: #{t.hitting} Emotions: #{t.emotions} Talking: #{t.talking} Learning: #{t.learning} Total score of: #{score}"
+        Interface.e_continue
       end
     end
   end
 
   def self.coach_menu_3(coach)
-    puts "Delete last evaluation? (Y/n)"
-    i = gets.strip
-    if i == "Y"
-      coach.delete_last_eval
-      puts "Deleting last evaluaton..."
-      sleep 1
-      puts "And we are back"
+    if coach.players == []
+      puts "You have no evaluations..."
+      Interface.e_continue
     else
-      puts "Nothing done, back to the menu..."
+      i = $prompt.select("Delete last evaluation?", %w(No Yes))
+      coach.reload
+        if i == "Yes"
+          coach.delete_last_eval
+          puts "Deleting last evaluaton..."
+          sleep 1
+          puts "Done!"
+          Interface.e_continue
+        else
+          puts "Nothing done..."
+          Interface.e_continue
+        end
     end
   end
 
@@ -217,33 +236,34 @@ class Interface
     else 
       name.each { |p| puts "You have evaluated: #{p.name} with tryout number: ##{p.tryout_number}" }
     end
-    $prompt.ask("\nPress ENTER to continue...")
+    Interface.e_continue
   end
 
   def self.coach_menu_1(coach)
-    puts "Tryout number?:"
-    tryout_number = gets.strip.to_i
+    tryout_number = $prompt.ask("Enter Tryout Number: ").to_i
     if Player.signed?(tryout_number)
-      puts "Setting skills? (1-10):"
-      setting = gets.strip.to_i
-      puts "Passing skills? (1-10):"
-      passing = gets.strip.to_i
-      puts "Hitting skills? (1-10):"
-      hitting = gets.strip.to_i
-      puts "Player emotions? (1-10):"
-      emotions = gets.strip.to_i
-      puts "Player talking? (1-10)"
-      talking = gets.strip.to_i
-      puts "Player learning? (1-10)"
-      learning = gets.strip.to_i
-
+      result = $prompt.collect do
+        key(:setting).ask("Setting skills? (1-10): ", convert: :int) 
+        key(:passing).ask("Passing skills? (1-10): ", convert: :int)
+        key(:hitting).ask("Hitting skills? (1-10): ", convert: :int)
+        key(:emotions).ask("Player emotions? (1-10): ", convert: :int)
+        key(:talking).ask("Player talking? (1-10): ", convert: :int)
+        key(:learning).ask("Player learning? (1-10) ", convert: :int)
+      end
+      result[:tryout_number] = tryout_number
       system "clear"
       puts "Creating evaluation..."
-      coach.make_eval(tryout_number: tryout_number, setting: setting, passing: passing, hitting: hitting, emotions: emotions, talking: talking, learning: learning)
+      coach.make_eval(result)
       sleep 1
       puts "Evaluation sucessful..."
+      Interface.e_continue
     else
       puts "That tryout number does not exist..."
+      Interface.e_continue
     end
+  end
+
+  def self.e_continue
+    $prompt.ask("\nPress ENTER to continue...")
   end
 end

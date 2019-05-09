@@ -91,4 +91,21 @@ class Player < ActiveRecord::Base
       puts "Success for Updating."
       change_info
     end
+
+    def self.compare_players(first_player:, second_player:)
+      # compare the scores of first player against second player by name
+      p1 = Player.find_by(name: first_player)
+      p2 = Player.find_by(name: second_player)
+      
+      begin
+          p1.view_eval
+          p2.view_eval
+      rescue => exception
+          return nil
+      else
+          puts "#{first_player} scored: #{p1.view_eval}"
+          puts "#{second_player} scored: #{p2.view_eval}"
+          p1.view_eval - p2.view_eval
+      end
+  end
 end

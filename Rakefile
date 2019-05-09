@@ -5,7 +5,11 @@ desc 'starts a console'
 task :console do
   # ActiveRecord::Base.logger.level = Logger.new(STDOUT)
   # ActiveRecord::Base.logger.level = nil
-
+  c = Coach.first
+  c2 = Coach.all[2]
+  p1 = Player.find_by(name: "Certain Player 1")
+  p2 = Player.find_by(name: "Best Player 10")
+  
   binding.pry
   c = Coach.first
   c2 = Coach.last
