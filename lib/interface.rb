@@ -22,7 +22,7 @@ class Interface
       arr = Player.all.select {|player| player.name.downcase == input }
       player = arr[0]
         #Display for current information
-      return self.new_sign_up(player)
+      return self.player_menu(player)
     else
       Player.new_player(input)
     end
@@ -44,7 +44,7 @@ class Interface
     end
   end
 
-  def self.new_sign_up(player)
+  def self.player_menu(player)
     system "clear"
     puts "Welcome back, #{player.name}!"
     puts "Your birthday is #{player.birthday}."
@@ -85,8 +85,12 @@ class Interface
           player.change_info
         when 3
           eval = player.view_eval
-          puts "Your average score is #{eval}."
-          go_back(player)
+          if eval.nan?
+            puts "You have not been evaluated yet..."
+          else
+            puts "Your average score is #{eval}."
+          end
+          Interface.e_continue
         when 4
           coach = player.view_coaches
           coach.each do |c|
@@ -96,16 +100,6 @@ class Interface
           puts "Good Bye..."
           exit
       end
-    end
-  end
-
-  def self.go_back(player)
-    puts "Do you want to go back to previous options?(Y/N)"
-    input = gets.chomp.downcase
-    if input == 'y'
-      new_sign_up(player)
-    else
-      goodbye
     end
   end
 

@@ -25,7 +25,7 @@ class Player < ActiveRecord::Base
       school = gets.chomp.downcase
 
       player = Player.create(name: name, birthday: bday, phone: phone_num, school: school)
-      Interface.new_sign_up(player)
+      Interface.player_menu(player)
     end
 
     def change_info
