@@ -30,14 +30,14 @@ class Interface
     end
   end
 
-  def name_c
+  def self.name_c
     input = ""
     while input
       puts "Hello coach, please enter your name:"
       input = gets.chomp.downcase
       if Coach.all.select {|coach| coach.name.downcase == input }.present?
         coach = Coach.all.find {|coach| coach.name.downcase == input }
-        coach_menu(coach)
+        self.coach_menu(coach)
       elsif input == "exit"
         puts "Signing Off"
         exit
@@ -109,7 +109,7 @@ class Interface
     firstQuestion
   end
 
-  def coach_menu(coach)
+  def self.coach_menu(coach)
     system "clear"
     input = ""
     while input
@@ -158,7 +158,7 @@ class Interface
     end
   end
 
-  def coach_menu_7(coach)
+  def self.coach_menu_7(coach)
     puts "Are you sure? This cannot be undone... (Y/n)"
       i = gets.strip
       if i == "Y"
@@ -171,7 +171,7 @@ class Interface
       end
   end
   
-  def coach_menu_6(coach)
+  def self.coach_menu_6(coach)
     puts "Enter 1st player name:"
     p1name = gets.downcase.strip
     puts "Enter 2nd player name:"
@@ -179,25 +179,25 @@ class Interface
     coach.compare_players ? (compare_players(first_player: p1name, second_player: p2name)) : (puts "Players not found...")
   end
 
-  def coach_menu_5
+  def self.coach_menu_5
     Player.signed_players.each do |p|
       puts "##{p.tryout_number} #{p.name} for Level: #{p.age_level} Position: #{p.position} School: #{p.school}"
     end
   end
 
-  def coach_menu_4(coach)
+  def self.coach_menu_4(coach)
     coach.reload
     if coach.tryouts == []
       puts "You have not evaluated any players..." 
     else 
         coach.tryouts.each do |t|
         score = t.passing + t.setting + t.hitting + t.emotions + t.talking + t.learning
-        puts "For playername: #{t.player.name}, tryout number: #{t.tryout_number}, age level: #{t.age_level}, you rated passing: #{t.passing} setting: #{t.setting} hitting: #{t.hitting} emotions: #{t.emotions} talking: #{t.talking} learning: #{t.learning} with a total score of: #{score}"
+        puts "For playername: #{t.player.name}, tryout number: #{t.tryout_number}, age level: #{t.age_level}, you rated Passing: #{t.passing} Setting: #{t.setting} Hitting: #{t.hitting} Emotions: #{t.emotions} Talking: #{t.talking} Learning: #{t.learning} Total score of: #{score}"
       end
     end
   end
 
-  def coach_menu_3(coach)
+  def self.coach_menu_3(coach)
     puts "Delete last evaluation? (Y/n)"
     i = gets.strip
     if i == "Y"
@@ -210,7 +210,7 @@ class Interface
     end
   end
 
-  def coach_menu_2(coach)
+  def self.coach_menu_2(coach)
     name = coach.players
     if name == [] 
       puts "You have not evaluated any players..." 
@@ -219,7 +219,7 @@ class Interface
     end
   end
 
-  def coach_menu_1(coach)
+  def self.coach_menu_1(coach)
     puts "Tryout number?:"
     tryout_number = gets.strip.to_i
     if Player.signed?(tryout_number)

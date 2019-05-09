@@ -10,7 +10,6 @@ class Player < ActiveRecord::Base
         self.tryout_number = self.id
         self.save
         print "Thank you for Sign-Up.\n"
-         Interface.new_sign_up(player)
     end
 
     def self.new_player(name)
