@@ -45,46 +45,59 @@ class Interface
   end
 
   def self.new_sign_up(player)
-    # player = Player.all.find {|x| x == player }
     system "clear"
-    puts "Welcome Back, #{player.name}!"
-    puts "Your Birthday is #{player.birthday}."
-    puts "Your School's name is #{player.school}."
-    puts "Your Phone Number is #{player.phone}."
-    puts "1.Sign Up"
-    puts "2.Edit information"
-    puts "3.View Evaluation"
-    puts "4.View Coaches"
-    puts "5.Go Back"
-    input = gets.chomp.downcase
-    if input == "1"
-      puts "Type in age level:"
-      age_level = gets.chomp
-      puts "Type in positon:"
-      position = gets.chomp
-      # player.sign_up(age_level: age_level, position: position)
-
-      self.new_sign_up(player)
-
-    elsif input == "2"
-      player.change_info
-
-    elsif input == "3"
-      eval = player.view_eval
-      puts "Your average score is #{eval}."
-      go_back(player)
-
-    elsif input == "4"
-      coach = player.view_coaches
-      coach.each do |c|
-        puts "You were evaluated by #{c}"
+    puts "Welcome back, #{player.name}!"
+    puts "Your birthday is #{player.birthday}."
+    puts "Your school's name is #{player.school}."
+    puts "Your phone Number is #{player.phone}."
+    Interface.e_continue
+    input = ""
+    while input
+      system "clear"
+      input = $prompt.select("#{player.name}'s Menu:") do |menu|
+        menu.choice "1. Sign Up For Tryouts", 1
+        menu.choice "2. Edit information", 2
+        menu.choice "3. View Evaluation", 3
+        menu.choice "4. View Coaches", 4
+        menu.choice "5. Exit", 5
       end
-      go_back(player)
-    elsif input == "5"
-      firstQuestion
 
-    else
-      puts "Invalid input."
+      case input
+        when 1
+          puts "Type in age level:"
+          age_level = gets.chomp
+          puts "Type in positon:"
+          position = gets.chomp
+
+          input = $prompt.select("Signing up for age level: #{age_level} and position: #{position}", %w(Yes No), cycle: true)
+          
+          case input
+          when "Yes"
+            player.sign_up(age_level: age_level, position: position)
+            sleep 1
+            puts "You are signed up!"
+            Interface.e_continue
+          when "No"
+            puts "Nothing Done..."
+            Interface.e_continue
+          end
+        when 2
+          player.change_info
+
+        when 3
+          eval = player.view_eval
+          puts "Your average score is #{eval}."
+          go_back(player)
+
+        when 4
+          coach = player.view_coaches
+          coach.each do |c|
+            puts "You were evaluated by #{c}"
+          end
+        when 5
+          puts "Good Bye..."
+          exit
+      end
     end
   end
 

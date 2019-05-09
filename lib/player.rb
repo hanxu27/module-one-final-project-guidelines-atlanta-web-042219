@@ -9,27 +9,27 @@ class Player < ActiveRecord::Base
         self.position = position
         self.tryout_number = self.id
         self.save
-        print "Thank you for Sign-Up.\n"
     end
 
     def self.new_player(name)
-      puts "Welcome to 'Hello Volleyball', #{name}!"
+      system "clear"
+      puts "Welcome to Player Registration, #{name}!"
 
-      puts "Please type your date of birth. format) yy/mm/dd"
+      puts "Please type your date of birth (yy/mm/dd)"
       bday = DateTime.strptime(gets.chomp, '%y/%m/%d')
 
-      puts "Please type your phone number. format)404-222-3333"
-      phone_num = gets.chomp.downcase
+      puts "Please type your phone number (404-222-3333)"
+      phone_num = gets.chomp
 
-      puts "Please type your school name. format)Flatiron School"
+      puts "Please type your school name (Flatiron School)"
       school = gets.chomp.downcase
 
       player = Player.create(name: name, birthday: bday, phone: phone_num, school: school)
       Interface.new_sign_up(player)
-
     end
 
     def change_info
+      system "clear"
       puts "What do you want to change? (choose number)"
       puts "1. Name"
       puts "2. Birthday"
