@@ -17,9 +17,11 @@ class Interface
   end
 
   def self.name_p
-    input = $prompt.ask("Please enter your name: ")
-    if Player.all.select {|player| player.name.downcase == input }.present?
-      arr = Player.all.select {|player| player.name.downcase == input }
+    input = $prompt.ask("Please enter your name (Firstname Lastname):") do |q|
+      q.validate(/^[A-Z][a-z]*\s[A-Z][a-z]*/ || /^[A-Z][a-z]*\s[A-Z][a-z]*.\d/, "Invalid Input...")
+    end
+    if Player.all.select {|player| player.name.downcase == input.downcase }.present?
+      arr = Player.all.select {|player| player.name.downcase == input.downcase }
       player = arr[0]
         #Display for current information
       return self.player_menu(player)
@@ -31,9 +33,11 @@ class Interface
   def self.name_c
     input = ""
     while input
-      input = $prompt.ask("Hello coach, please enter your name: ").downcase
-      if Coach.all.select {|coach| coach.name.downcase == input }.present?
-        coach = Coach.all.find {|coach| coach.name.downcase == input }
+      input = $prompt.ask("Hello coach, please enter your name (Firstname Lastname):") do |q|
+        q.validate(/^[A-Z][a-z]*\s[A-Z][a-z]*/ || /^[A-Z][a-z]*\s[A-Z][a-z]*.\d/, "Invalid Input...")
+      end
+      if Coach.all.select {|coach| coach.name.downcase == input.downcase }.present?
+        coach = Coach.all.find {|coach| coach.name.downcase == input.downcase }
         self.coach_menu(coach)
       elsif input == "exit"
         puts "Signing Off"
