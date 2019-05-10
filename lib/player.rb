@@ -17,7 +17,7 @@ class Player < ActiveRecord::Base
 
       bday = $prompt.ask("Please type your date of birth (yyyy/mm/dd) ") do |q|
         # val = q.validate(/\d{4}\D\d{2}\D\d{2}/, "Invalid Input...")
-        q.validate(/^(19|20)\d\d[- (\/|\-).](0[1-9]|1[012])[- (\/|\-).](0[1-9]|[12][0-9]|3[01])$/, "Invalid date...")
+        q.validate(/^(19|20)\d\d[-\/.](0\d|1[0-2])[-\/.](0\d|[1-2]\d|3[0-1])$/, "Invalid date...")
       end
 
 
