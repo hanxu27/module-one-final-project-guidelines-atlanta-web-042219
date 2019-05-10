@@ -15,9 +15,12 @@ class Player < ActiveRecord::Base
       system "clear"
       puts "Welcome to Player Registration, #{name}!"
 
-      bday = $prompt.ask("Please type your date of birth (yyyy-mm-dd) ") do |q|
-        q.validate(/\d{4}\D\d{2}\D\d{2}/, "Invalid Input...")
+      bday = $prompt.ask("Please type your date of birth (yyyy/mm/dd) ") do |q|
+        # val = q.validate(/\d{4}\D\d{2}\D\d{2}/, "Invalid Input...")
+        q.validate(/^(19|20)\d\d[- (\/|\-).](0[1-9]|1[012])[- (\/|\-).](0[1-9]|[12][0-9]|3[01])$/, "Invalid date...")
       end
+
+
 
       phone_num = $prompt.ask("Please type your phone number (404-222-3333) ") do |q|
         q.validate(/\d{3}\D\d{3}\D\d{4}/, "Invalid Input...")
@@ -25,9 +28,11 @@ class Player < ActiveRecord::Base
 
       school = $prompt.ask("Please type your school name (Flatiron School)") do |q|
         q.validate(/.{3,}/, "Invalid Input...")
+
       end
 
       player = Player.create(name: name, birthday: bday, phone: phone_num, school: school)
+      binding.pry
       Interface.player_menu(player)
     end
 
