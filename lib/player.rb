@@ -32,7 +32,6 @@ class Player < ActiveRecord::Base
       end
 
       player = Player.create(name: name, birthday: bday, phone: phone_num, school: school)
-      binding.pry
       Interface.player_menu(player)
     end
 
