@@ -50,6 +50,7 @@ class Interface
 
   def self.player_menu(player)
     system "clear"
+    player.reload
     puts "Welcome back, #{player.name}!"
     puts "Your birthday is #{player.birthday.strftime('%Y-%m-%d')}."
     puts "Your school's name is #{player.school}."

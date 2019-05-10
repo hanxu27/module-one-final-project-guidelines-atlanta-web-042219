@@ -23,8 +23,8 @@ class Player < ActiveRecord::Base
         q.validate(/\d{3}\D\d{3}\D\d{4}/, "Invalid Input...")
       end
 
-      school = $promp.ask("Please type your school name (Flatiron School)") do |q|
-        q.validate(/.{5,}/, "Invalid Input...")
+      school = $prompt.ask("Please type your school name (Flatiron School)") do |q|
+        q.validate(/.{3,}/, "Invalid Input...")
       end
 
       player = Player.create(name: name, birthday: bday, phone: phone_num, school: school)
